@@ -1,0 +1,18 @@
+---
+
+- name: Download SVN installation repo
+  copy: 
+    src: wandisco-svn.repo
+    dest: /etc/yum.repos.d/wandisco-svn.repo
+
+- name: Install SVN
+  apt:
+    name: subversion
+    state: present
+    force: yes
+
+- name: Create SVN environment variables
+  copy: 
+    content: 'export SVN_HOME=/usr/bin\nexport PATH=\$PATH:\$SVN_HOME'
+    dest: /etc/profile.d/svn-client.sh
+    mode: 0755

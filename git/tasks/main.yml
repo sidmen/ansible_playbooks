@@ -1,0 +1,18 @@
+---
+
+- name: Download GIT installation repo
+  copy:
+    content: '[WandiscoGIT]\nname=Wandisco GIT Repo\nbaseurl=http://opensource.wandisco.com/centos/\$releasever/git/\$basearch/\nenabled=1\ngpgcheck=0'
+    dest: /etc/yum.repos.d/wandisco-git.repo
+
+- name: Install GIT
+  apt:
+    name: git=2.3.1-1.WANdisco.242
+    state: present
+    force: yes
+
+- name: Create GIT environment variables
+  copy:
+    content: 'export GIT_HOME=/usr/bin\nexport PATH=\$PATH:\$GIT_HOME'
+    dest: /etc/profile.d/git-client.sh
+    mode: 0755

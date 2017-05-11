@@ -1,0 +1,25 @@
+---
+
+- name: Download Java Archive
+  copy:
+    src: jdk-8u45-linux-x64.tar.gz
+    dest: /opt
+
+- name: Extract Java Archive
+  unarchive:
+    src: /opt/jdk-8u45-linux-x64.tar.gz
+    dest: /usr/lib/jvm
+    remote_src: yes
+
+- name: Install Java
+  command: /usr/bin/update-alternatives --install /usr/bin/java java /usr/lib/jvm/jdk1.8.0_45/jre/bin/java 1
+
+- name: Set Java
+  command: /usr/bin/update-alternatives --set java /usr/lib/jvm/jdk1.8.0_45/jre/bin/java
+
+- name: Set Java Environment Variables
+  copy:
+    src: set_java_home.sh
+    dest: /etc/profile.d
+    mode: 0755
+

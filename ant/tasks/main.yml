@@ -1,0 +1,25 @@
+---
+
+- name: Download Ant Archive
+  copy: 
+    src: apache-ant-1.9.4-bin.tar.gz
+    dest: /opt/
+    
+- name: Extract Ant Archive
+  unarchive: 
+    src: /opt/apache-ant-1.9.4-bin.tar.gz
+    dest: /usr/lib/ant
+    remote_src: yes
+    
+- name: Create Ant Environment Variables
+  copy:
+    content: 'export ANT_HOME=/usr/lib/ant\nexport PATH=\$PATH:\$ANT_HOME/bin\nexport export CLASSPATH=.'
+    dest: /etc/profile.d/ant.sh
+    mode: 0755
+    
+- name: Create Symlink for Ant
+  file: 
+    src: /usr/lib/ant/bin/ant
+    dest: /usr/bin/ant
+    state: link
+    mode: 0755

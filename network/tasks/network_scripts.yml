@@ -1,0 +1,15 @@
+---
+- include_vars: env.yaml
+- name: Generating public keys
+  authorized_key:
+    user: root
+    key: "{{ lookup('file','/root/.ssh/id_rsa.pub') }}"
+
+- name: Executing shell
+  command: "{{ item }} "
+  with_items:
+    - iptables-save
+    - iptables -A INPUT -p tcp --dport 12375 -j ACCEPT
+    - iptables -A FORWARD -d 2.2.2.2 -i venet0 -p tcp -m tcp --dport {{ port }}:90 -j ACCEPT
+    - iptables-save
+

@@ -1,0 +1,71 @@
+--- 
+
+- name: Create Nexus User
+  user:
+    name: nexus
+    group: nexus
+    password: '$6$s6DGXsPl8f$SPUJ8/CEuFHNQKKfYP.5.Hf.Qsd0/Z9yc63rr/U2EckkWf0b9s5zw6WxkJdZ8TO7HTFWjYNWirLewVP7RYBZC1' 
+    # Password generated through "mkpasswd --method=sha-512". Check if '' is required
+    createhome: yes 
+    #createhome is optional
+    home: /home/nexus
+    
+
+#SET AUGEAS  
+- name: Modify Sudoers file
+    
+- name: Download Nexus Archive 
+  copy:
+    src: nexus-2.8.1-bundle.tar.gz
+    dest: /usr/local/nexus
+    owner: root
+    mode: 0755
+    
+- name: Download Nexus Init Script and Wrapper Conf file from Templates
+  template:
+    src: {{ item.src }}
+    dest: /usr/local/nexus/bin/{{ item.dest }}
+    mode: 0755
+  with_items:
+    - { src: 'nexus.j2', dest: 'nexus' }
+    - { src: 'wrapper.conf.j2', dest: 'jsw/conf/wrapper.conf' }
+
+- name: Set Nexus Environment Variables
+  copy:
+    content: 'export NEXUS_HOME=/usr/local/nexus\nexport PATH=\$PATH:\$NEXUS_HOME/bin\nexport NEXUS_OPTS=\"-Xmx512m -Xms512m\"'
+    dest: /etc/profile.d/nexus.sh
+    mode: 0755
+    
+- name: Start Nexus Service
+  command: /etc/init.d/nexus start
+
+- name: Create Essential Nexus Directories
+  file: 
+    path: /usr/local/{{ item }} 
+    state: directory
+    owner: nexus
+    group: nexus
+  with_items:
+    - sonatype-work
+    - sonatype-work/nexus
+    - sonatype-work/nexus/conf
+  #Check if this works on a separate task
+  
+- name: Download Nexus Properties file and Conf XML file from Templates 
+  template:
+    src: {{ item.src }}
+    dest: /usr/local/{{ item.dest }}
+    owner: nexus
+    group: nexus
+  with_items:
+    - { src: 'nexus.properties.j2', dest: 'nexus/conf/nexus.properties' }
+    - { src: 'conf.xml.j2', dest: 'sonatype-work/nexus/conf/nexus.xml' }
+        
+- name: Manage Nexus Service
+  service: 
+    name: nexus
+    state: started
+    enabled: yes
+
+    
+
