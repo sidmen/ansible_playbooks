@@ -1,6 +1,9 @@
 Role Name
 ========
 
+Note: Java archive "jdk-8u45-linux-x64.tar.gz" is not available in files folder. Download it from https://svn.happiestminds.com/svn/pesdev01/adapuppet/trunk/ada_bg_framework/modules/java/files/
+
+
 A brief description of the role goes here.
 
 Requirements
