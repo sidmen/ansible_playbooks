@@ -1,0 +1,14 @@
+---
+
+- name: Install Postfix
+  apt:
+    name: postfix=2.6.6-6.el6_5
+    state: present
+    force: yes
+    
+- name: Manage Postfix Service
+  service:
+    name: postfix
+    state: started
+    enabled: yes
+    
