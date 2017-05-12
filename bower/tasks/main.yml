@@ -1,0 +1,19 @@
+---
+
+- name: Create Bower Directory
+  file: 
+    path: /usr/local/bower
+    state: directory
+    mode: 0644
+    
+- name: Download Bower Package
+  copy: 
+    src: {{ item }} 
+    dest: /usr/local/bower
+  with_items:
+    - bower.npmbox 
+    - install_bower.sh    
+        
+- name: Install Bower
+  command: bash /usr/local/bower/install_bower.sh 
+  
