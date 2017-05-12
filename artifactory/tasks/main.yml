@@ -1,0 +1,40 @@
+---
+
+- name: Download Artifactory Package
+  copy:
+    src: jfrog-artifactory-oss-4.4.2.zip
+    dest: /opt
+    
+- name: Extract Artifactory Archive
+  unarchive:
+    src: /opt/jfrog-artifactory-oss-4.4.2.zip
+    dest: /usr/local
+    remote_src: yes
+# Check if this works for "zip" package 
+
+- name: Set Artifactory Home
+  file:
+    src: /usr/local/artifactory-oss-4.4.2
+    dest: /usr/local/artifactory
+    state: link
+    
+- name: Tomcat Server Config File for Artifactory
+  template:
+    src: server.xml.j2
+    dest: /usr/local/artifactory/tomcat/conf/server.xml
+    mode: 0644
+    
+- name: Set Artifactory Service File
+  file:
+    src: /usr/local/artifactory/bin/installService.sh
+    dest: /etc/init.d/artifactory
+    mode: 0755
+    
+- name: Start Tomcat Service
+  command: /usr/local/artifactory/tomcat/bin/catalina.sh start
+  
+- name: Manage Artifactory Service
+  service:
+    name: artifactory
+    state: started
+    enable: yes
