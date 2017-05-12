@@ -1,0 +1,39 @@
+---
+
+- name: Download Tomcat Package
+  copy:
+    src: apache-tomcat-8.0.33.tar.gz
+    dest: /opt
+    
+- name: Extract Tomcat Archive
+  unarchive: 
+    src: /opt/apache-tomcat-8.0.33.tar.gz
+    dest: /usr/local
+    remote_src: yes
+    
+- name: Set Symlink for Tomcat
+  file: 
+    src: /usr/local/apache-tomcat-8.0.33
+    dest: /usr/local/tomcat8
+    state: link
+    
+- name: Script to Set Catalina Home
+  copy:
+    src: home.sh
+    dest: /opt
+    mode: 0755
+    
+- name: Set Catalina Home
+  command: /bin/sh /opt/home.sh
+  
+- name: Download Service Script for Tomcat
+  copy: 
+    src: /usr/local/tomcat8/bin/catalina.sh
+    dest: /etc/init.d/tomcat8
+    mode: 0755
+    
+- name: Manage Tomcat Service
+  service:
+    name: tomcat8
+    state: started
+    enabled: yes
