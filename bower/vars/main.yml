@@ -1,2 +1,3 @@
 ---
-# vars file for bower
+
+bower_home: /usr/local/bower
