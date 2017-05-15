@@ -2,7 +2,7 @@
 
 - name: Install Postfix
   apt:
-    name: postfix=2.6.6-6.el6_5
+    name: postfix={{ postfix_version }}
     state: present
     force: yes
     
