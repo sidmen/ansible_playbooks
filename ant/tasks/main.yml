@@ -2,12 +2,12 @@
 
 - name: Download Ant Archive
   copy: 
-    src: apache-ant-1.9.4-bin.tar.gz
+    src: apache-ant-{{ ant_version }}-bin.tar.gz
     dest: /opt/
     
 - name: Extract Ant Archive
   unarchive: 
-    src: /opt/apache-ant-1.9.4-bin.tar.gz
+    src: /opt/apache-ant-{{ ant_version }}-bin.tar.gz
     dest: /usr/lib/ant
     remote_src: yes
     
