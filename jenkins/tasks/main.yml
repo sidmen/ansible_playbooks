@@ -1,18 +1,18 @@
 ---
 
 - name: Install Jenkins Package Key
-  commmand: /usr/bin/wget -O /etc/yum.repos.d/jenkins.repo http://pkg.jenkins-ci.org/redhat/jenkins.repo | /bin/rpm --import http://pkg.jenkins-ci.org/redhat/jenkins-ci.org.key
+  commmand: /usr/bin/wget -O /etc/yum.repos.d/jenkins.repo {{ jenkins_repo_url }} | /bin/rpm --import {{ jenkins_repo_key }}
   
 - name: Install Jenkins
   apt:
-    name: jenkins=1.575-1.1
+    name: jenkins={{ jenkins_version }}
     state: present
     force: yes
     
 - name: Download Jenkins Essential files
   copy:
     src: {{ item }}
-    dest: /var/lib/jenkins
+    dest: {{ jenkins_home }}
     owner: jenkins
     group: jenkins
     mode: 0755
@@ -25,7 +25,7 @@
 - name: Create Jenkins Essential Directories
   copy: 
     src: "{{ item.src }}"
-    dest: "/var/lib/jenkins/{{ item.dest }}"
+    dest: "{{ jenkins_home }}/{{ item.dest }}"
     owner: jenkins
     group: jenkins
     mode: "{{ item.mode }}"
@@ -37,8 +37,8 @@
     
 - name: Set Jenkins Environment Variables
   copy:
-    content: 'export JENKINS_HOME=/var/lib/jenkins\nexport PATH=\$PATH:\$JENKINS_HOME'
-    dest: /etc/profile.d/jenkins.sh
+    content: 'export JENKINS_HOME={{ jenkins_home }}\nexport PATH=\$PATH:\$JENKINS_HOME'
+    dest: {{ jenkins_environment_variable_file }}
     mode: 0755
 
 - name: Manage Jenkins Service
