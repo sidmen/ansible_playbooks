@@ -7,12 +7,12 @@
 
 - name: Install GIT
   apt:
-    name: git=2.3.1-1.WANdisco.242
+    name: git={{ git_version }}
     state: present
     force: yes
 
 - name: Create GIT environment variables
   copy:
     content: 'export GIT_HOME=/usr/bin\nexport PATH=\$PATH:\$GIT_HOME'
-    dest: /etc/profile.d/git-client.sh
+    dest: {{ git_environment_variable_file }}
     mode: 0755

@@ -1,2 +1,5 @@
----
-# vars file for git
+--- 
+
+git_version: 2.3.1-1.WANdisco.242
+git_environment_variable_file: /etc/profile.d/git-client.sh
+
