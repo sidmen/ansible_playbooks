@@ -1,2 +1,5 @@
----
-# vars file for nexus
+--- 
+
+nexus_version: 2.8.1
+nexus_home: /usr/local/nexus
+nexus_environment_variable_file: /etc/profile.d/nexus.sh

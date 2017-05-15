@@ -5,7 +5,7 @@
     name: nexus
     group: nexus
     password: '$6$s6DGXsPl8f$SPUJ8/CEuFHNQKKfYP.5.Hf.Qsd0/Z9yc63rr/U2EckkWf0b9s5zw6WxkJdZ8TO7HTFWjYNWirLewVP7RYBZC1' 
-    # Password generated through "mkpasswd --method=sha-512". Check if '' is required
+    # Password is "nexus" generated through "mkpasswd --method=sha-512". Check if '' is required
     createhome: yes 
     #createhome is optional
     home: /home/nexus
@@ -16,15 +16,15 @@
     
 - name: Download Nexus Archive 
   copy:
-    src: nexus-2.8.1-bundle.tar.gz
-    dest: /usr/local/nexus
+    src: nexus-{{ nexus_version }}-bundle.tar.gz
+    dest: {{ nexus_home }}
     owner: root
     mode: 0755
     
 - name: Download Nexus Init Script and Wrapper Conf file from Templates
   template:
     src: "{{ item.src }}"
-    dest: "/usr/local/nexus/bin/{{ item.dest }}"
+    dest: "{{ nexus_home }}/bin/{{ item.dest }}"
     mode: 0755
   with_items:
     - { src: 'nexus.j2', dest: 'nexus' }
@@ -32,8 +32,8 @@
 
 - name: Set Nexus Environment Variables
   copy:
-    content: 'export NEXUS_HOME=/usr/local/nexus\nexport PATH=\$PATH:\$NEXUS_HOME/bin\nexport NEXUS_OPTS=\"-Xmx512m -Xms512m\"'
-    dest: /etc/profile.d/nexus.sh
+    content: 'export NEXUS_HOME={{ nexus_home }}\nexport PATH=\$PATH:\$NEXUS_HOME/bin\nexport NEXUS_OPTS=\"-Xmx512m -Xms512m\"'
+    dest: {{ nexus_environment_variable_file }}
     mode: 0755
     
 - name: Start Nexus Service
