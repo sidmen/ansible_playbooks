@@ -1,2 +1,4 @@
----
-# vars file for maven
+--- 
+
+maven_version: 3.2.1
+maven_environment_variable_file: /etc/profile.d/maven.sh

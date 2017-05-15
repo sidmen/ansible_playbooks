@@ -2,19 +2,19 @@
 
 - name: Download Maven Archive
   copy: 
-    src: apache-maven-3.2.1-bin.tar.gz
+    src: apache-maven-{{ maven_version }}-bin.tar.gz
     dest: /opt/
     
 - name: Extract Maven Archive
   unarchive: 
-    src: /opt/apache-maven-3.2.1-bin.tar.gz
+    src: /opt/apache-maven-{{ maven_version }}-bin.tar.gz
     dest: /usr/lib/maven
     remote_src: yes
     
 - name: Create Maven Environment Variables
   copy:
     content: 'export MAVEN_HOME=/usr/lib/maven\nexport M2=\$MAVEN_HOME/bin\nexport PATH=\$PATH:\$M2\nexport MAVEN_OPTS=\"-Xmx512m -Xms512m\"'
-    dest: /etc/profile.d/maven.sh
+    dest: {{ maven_environment_variable_file }}
     mode: 0755
 
 - name: Create Symlink for Maven
