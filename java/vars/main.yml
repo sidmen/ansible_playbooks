@@ -1,2 +1,4 @@
----
-# vars file for java
+--- 
+
+java_archive: jdk-8u45-linux-x64.tar.gz
+java_dir: /usr/lib/jvm/jdk1.8.0_45
