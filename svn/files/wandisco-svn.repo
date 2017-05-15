@@ -1,5 +1,5 @@
 [WandiscoSVN]
 name=Wandisco SVN Repo
-baseurl=http://opensource.wandisco.com/centos/\$releasever/svn-1.8/RPMS/\$basearch/
+baseurl=http://opensource.wandisco.com/centos/\$releasever/svn-{{ svn_version }}/RPMS/\$basearch/
 enabled=1
 gpgcheck=0
