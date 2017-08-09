@@ -2,19 +2,19 @@
 
 - name: Download Tomcat Package
   copy:
-    src: apache-tomcat-{{ tomcat_version }}.tar.gz
+    src: apache-tomcat-"{{ tomcat_version }}".tar.gz
     dest: /opt
     
 - name: Extract Tomcat Archive
   unarchive: 
-    src: /opt/apache-tomcat-{{ tomcat_version }}.tar.gz
+    src: /opt/apache-tomcat-"{{ tomcat_version }}".tar.gz
     dest: /usr/local
     remote_src: yes
     
 - name: Set Symlink for Tomcat
   file: 
-    src: /usr/local/apache-tomcat-{{ tomcat_version }}
-    dest: {{ tomcat_home }}
+    src: /usr/local/apache-tomcat-"{{ tomcat_version }}"
+    dest: "{{ tomcat_home }}"
     state: link
     
 - name: Script to Set Catalina Home
@@ -28,7 +28,7 @@
   
 - name: Download Service Script for Tomcat
   copy: 
-    src: {{ tomcat_home }}/bin/catalina.sh
+    src: "{{ tomcat_home }}"/bin/catalina.sh
     dest: /etc/init.d/tomcat8
     mode: 0755
     
